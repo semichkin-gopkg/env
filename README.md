@@ -13,12 +13,6 @@ import (
 	"os"
 )
 
-func must(err error) {
-	if err != nil {
-		panic(err)
-	}
-}
-
 type Config struct {
 	A string `env:"A" envDefault:"A"`
 	B string `env:"B" envDefault:"$A B" envExpand:"true"`
@@ -28,15 +22,12 @@ type Config struct {
 
 func main() {
 	for _, name := range []string{"A", "B", "SLICE"} {
-		must(os.Unsetenv(name))
+		_ = os.Unsetenv(name)
 	}
 
-	config, err := env.Fill[Config](env.WithOnSetFn(func(tag string, value interface{}, isDefault bool) {
-		must(os.Setenv(tag, fmt.Sprintf("%v", value)))
+	config, _ := env.Fill[Config](env.WithOnSetFn(func(tag string, value interface{}, isDefault bool) {
+		_ = os.Setenv(tag, fmt.Sprintf("%v", value))
 	}))
-	if err != nil {
-		panic(err)
-	}
 
 	log.Println(config.A)     // A
 	log.Println(config.B)     // A B

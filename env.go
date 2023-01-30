@@ -5,10 +5,10 @@ import (
 	"github.com/semichkin-gopkg/configurator"
 )
 
-func Fill[T any](updater ...configurator.Updater[Configuration]) (T, error) {
+func Fill[T any](updaters ...configurator.Updater[Configuration]) (T, error) {
 	var config T
 
-	options := configurator.New[Configuration]().Append(updater...).Apply()
+	options := configurator.New[Configuration]().Append(updaters...).Apply()
 
 	err := env.Parse(&config, env.Options{
 		Environment:     options.Environments,
@@ -19,4 +19,13 @@ func Fill[T any](updater ...configurator.Updater[Configuration]) (T, error) {
 	})
 
 	return config, err
+}
+
+func MustFill[T any](updaters ...configurator.Updater[Configuration]) T {
+	filled, err := Fill[T](updaters...)
+	if err != nil {
+		panic(err)
+	}
+
+	return filled
 }
