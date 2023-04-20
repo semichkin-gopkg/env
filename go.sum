@@ -1,4 +1,4 @@
 github.com/caarlos0/env/v6 v6.10.1 h1:t1mPSxNpei6M5yAeu1qtRdPAK29Nbcf/n3G7x+b3/II=
 github.com/caarlos0/env/v6 v6.10.1/go.mod h1:hvp/ryKXKipEkcuYjs9mI4bBCg+UI0Yhgm5Zu0ddvwc=
-github.com/semichkin-gopkg/configurator v0.0.2 h1:NxgkQ3Hl6fL8JCXZ83ea8nBuFR8VKSlhPBVauJDtJv0=
-github.com/semichkin-gopkg/configurator v0.0.2/go.mod h1:DQbEy5n8j/BOEIN6pq/Gn3Bor39Wct6BfcEgsRuvi2A=
+github.com/semichkin-gopkg/conf v0.0.4 h1:4gu1Qyldba45tBisQdcWAucxl/OPyKq0pvidsDwQmts=
+github.com/semichkin-gopkg/conf v0.0.4/go.mod h1:hcOYG4uFFkyVdK429d+vJjN8Hd8AWYWKBKTAcYL1H3E=

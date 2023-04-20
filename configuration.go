@@ -1,6 +1,8 @@
 package env
 
-import "github.com/semichkin-gopkg/configurator"
+import (
+	"github.com/semichkin-gopkg/conf"
+)
 
 type (
 	Environments = map[string]string
@@ -24,13 +26,13 @@ type Configuration struct {
 	Prefix string
 }
 
-func WithEnvironments(environments Environments) configurator.Updater[Configuration] {
+func WithEnvironments(environments Environments) conf.Updater[Configuration] {
 	return func(c *Configuration) {
 		c.Environments = environments
 	}
 }
 
-func WithEnvironment(key string, val string) configurator.Updater[Configuration] {
+func WithEnvironment(key string, val string) conf.Updater[Configuration] {
 	return func(c *Configuration) {
 		if c.Environments == nil {
 			c.Environments = Environments{}
@@ -40,25 +42,25 @@ func WithEnvironment(key string, val string) configurator.Updater[Configuration]
 	}
 }
 
-func WithTagName(name string) configurator.Updater[Configuration] {
+func WithTagName(name string) conf.Updater[Configuration] {
 	return func(c *Configuration) {
 		c.TagName = name
 	}
 }
 
-func WithRequiredIfNoDef(required bool) configurator.Updater[Configuration] {
+func WithRequiredIfNoDef(required bool) conf.Updater[Configuration] {
 	return func(c *Configuration) {
 		c.RequiredIfNoDef = required
 	}
 }
 
-func WithOnSetFn(fn OnSetFn) configurator.Updater[Configuration] {
+func WithOnSetFn(fn OnSetFn) conf.Updater[Configuration] {
 	return func(c *Configuration) {
 		c.OnSet = fn
 	}
 }
 
-func WithPrefix(prefix string) configurator.Updater[Configuration] {
+func WithPrefix(prefix string) conf.Updater[Configuration] {
 	return func(c *Configuration) {
 		c.Prefix = prefix
 	}

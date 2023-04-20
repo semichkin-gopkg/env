@@ -2,13 +2,13 @@ package env
 
 import (
 	"github.com/caarlos0/env/v6"
-	"github.com/semichkin-gopkg/configurator"
+	"github.com/semichkin-gopkg/conf"
 )
 
-func Fill[T any](updaters ...configurator.Updater[Configuration]) (T, error) {
+func Fill[T any](updaters ...conf.Updater[Configuration]) (T, error) {
 	var config T
 
-	options := configurator.New[Configuration]().Append(updaters...).Apply()
+	options := conf.New[Configuration]().Append(updaters...).Build()
 
 	err := env.Parse(&config, env.Options{
 		Environment:     options.Environments,
@@ -21,7 +21,7 @@ func Fill[T any](updaters ...configurator.Updater[Configuration]) (T, error) {
 	return config, err
 }
 
-func MustFill[T any](updaters ...configurator.Updater[Configuration]) T {
+func MustFill[T any](updaters ...conf.Updater[Configuration]) T {
 	filled, err := Fill[T](updaters...)
 	if err != nil {
 		panic(err)
