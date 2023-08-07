@@ -9,7 +9,7 @@ type (
 	OnSetFn      = func(tag string, value interface{}, isDefault bool)
 )
 
-type Configuration struct {
+type Config struct {
 	// Environments keys and values that will be accessible for the service.
 	Environments map[string]string
 
@@ -26,14 +26,14 @@ type Configuration struct {
 	Prefix string
 }
 
-func WithEnvironments(environments Environments) conf.Updater[Configuration] {
-	return func(c *Configuration) {
+func WithEnvironments(environments Environments) conf.Updater[Config] {
+	return func(c *Config) {
 		c.Environments = environments
 	}
 }
 
-func WithEnvironment(key string, val string) conf.Updater[Configuration] {
-	return func(c *Configuration) {
+func WithEnvironment(key string, val string) conf.Updater[Config] {
+	return func(c *Config) {
 		if c.Environments == nil {
 			c.Environments = Environments{}
 		}
@@ -42,26 +42,26 @@ func WithEnvironment(key string, val string) conf.Updater[Configuration] {
 	}
 }
 
-func WithTagName(name string) conf.Updater[Configuration] {
-	return func(c *Configuration) {
+func WithTagName(name string) conf.Updater[Config] {
+	return func(c *Config) {
 		c.TagName = name
 	}
 }
 
-func WithRequiredIfNoDef(required bool) conf.Updater[Configuration] {
-	return func(c *Configuration) {
+func WithRequiredIfNoDef(required bool) conf.Updater[Config] {
+	return func(c *Config) {
 		c.RequiredIfNoDef = required
 	}
 }
 
-func WithOnSetFn(fn OnSetFn) conf.Updater[Configuration] {
-	return func(c *Configuration) {
+func WithOnSetFn(fn OnSetFn) conf.Updater[Config] {
+	return func(c *Config) {
 		c.OnSet = fn
 	}
 }
 
-func WithPrefix(prefix string) conf.Updater[Configuration] {
-	return func(c *Configuration) {
+func WithPrefix(prefix string) conf.Updater[Config] {
+	return func(c *Config) {
 		c.Prefix = prefix
 	}
 }
