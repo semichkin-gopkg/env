@@ -2,16 +2,18 @@ package env
 
 import (
 	"github.com/semichkin-gopkg/conf"
+	"reflect"
 )
 
 type (
 	Environments = map[string]string
 	OnSetFn      = func(tag string, value interface{}, isDefault bool)
+	ParserFunc   = func(v string) (interface{}, error)
 )
 
 type Config struct {
 	// Environments keys and values that will be accessible for the service.
-	Environments map[string]string
+	Environments Environments
 
 	// TagName specifies another tag name to use rather than the default env.
 	TagName string
@@ -24,6 +26,9 @@ type Config struct {
 
 	// Prefix define a prefix for each key
 	Prefix string
+
+	// Parsers defines parse functions for different types.
+	Parsers map[reflect.Type]ParserFunc
 }
 
 func WithEnvironments(environments Environments) conf.Updater[Config] {
@@ -63,5 +68,21 @@ func WithOnSetFn(fn OnSetFn) conf.Updater[Config] {
 func WithPrefix(prefix string) conf.Updater[Config] {
 	return func(c *Config) {
 		c.Prefix = prefix
+	}
+}
+
+func WithParsers(p map[reflect.Type]ParserFunc) conf.Updater[Config] {
+	return func(c *Config) {
+		c.Parsers = p
+	}
+}
+
+func WithParser(t reflect.Type, f ParserFunc) conf.Updater[Config] {
+	return func(c *Config) {
+		if c.Parsers == nil {
+			c.Parsers = map[reflect.Type]ParserFunc{}
+		}
+
+		c.Parsers[t] = f
 	}
 }

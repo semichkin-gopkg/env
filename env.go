@@ -1,8 +1,9 @@
 package env
 
 import (
-	"github.com/caarlos0/env/v6"
+	"github.com/caarlos0/env/v9"
 	"github.com/semichkin-gopkg/conf"
+	"reflect"
 )
 
 func Fill[T any](updaters ...conf.Updater[Config]) (T, error) {
@@ -10,12 +11,18 @@ func Fill[T any](updaters ...conf.Updater[Config]) (T, error) {
 
 	options := conf.New[Config]().Append(updaters...).Build()
 
-	err := env.Parse(&config, env.Options{
+	parsers := make(map[reflect.Type]env.ParserFunc, len(options.Parsers))
+	for t, p := range options.Parsers {
+		parsers[t] = p
+	}
+
+	err := env.ParseWithOptions(&config, env.Options{
 		Environment:     options.Environments,
 		TagName:         options.TagName,
 		RequiredIfNoDef: options.RequiredIfNoDef,
 		OnSet:           options.OnSet,
 		Prefix:          options.Prefix,
+		FuncMap:         parsers,
 	})
 
 	return config, err
@@ -30,7 +37,8 @@ func MustFill[T any](updaters ...conf.Updater[Config]) T {
 	return filled
 }
 
-type Env[T any] struct{}
+type Env[T any] struct {
+}
 
 func (e Env[T]) Fill(updaters ...conf.Updater[Config]) (T, error) {
 	return Fill[T](updaters...)

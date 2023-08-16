@@ -6,7 +6,7 @@ import (
 )
 
 func TestFill(t *testing.T) {
-	for _, name := range []string{"A", "B", "C"} {
+	for _, name := range []string{"A", "B", "C", "D"} {
 		if err := os.Unsetenv(name); err != nil {
 			t.Error(err)
 		}
@@ -20,6 +20,7 @@ func TestFill(t *testing.T) {
 		A string `env:"A"`
 		B bool   `env:"B"`
 		C int    `env:"C" envDefault:"10"`
+		D bool   `env:"D,expand" envDefault:"${B}"`
 	}
 
 	filled, err := Fill[Config]()
@@ -37,6 +38,10 @@ func TestFill(t *testing.T) {
 
 	if filled.C != 10 {
 		t.Error("filled.C must be 10, got:", filled.C)
+	}
+
+	if filled.D != true {
+		t.Error("filled.D must be true, got:", filled.D)
 	}
 }
 
