@@ -9,6 +9,7 @@ type (
 	Environments = map[string]string
 	OnSetFn      = func(tag string, value interface{}, isDefault bool)
 	ParserFunc   = func(v string) (interface{}, error)
+	Updater      = conf.Updater[Config]
 )
 
 type Config struct {
